@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: janhan <janhan@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/10/13 23:50:52 by janhan            #+#    #+#              #
-#    Updated: 2023/10/14 00:06:47 by janhan           ###   ########.fr        #
+#    Created: 2023/10/16 10:58:10 by janhan            #+#    #+#              #
+#    Updated: 2023/10/16 14:53:26 by janhan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,40 +15,37 @@ LIBFTDIR	= ./libft
 LIBFTFILE	= libft.a
 HEAD		= ft_printf.h
 
-CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror
-AR			= ar rcs
-RM			= rm -f
+CC = cc
+CFLAGS = # -Wall -Wextra -Werror
 
-SRCS		= ft_printf.c \
-			ft_print_parse.c \
-			ft_print_char.c \
-			ft_print_str.c \
-			ft_print_num.c \
-			ft_print_num_print.c
-
-OBJS      = $(SRCS:.c=.o)
+SRCS  = ft_printf.c \
+		ft_print_char.c \
+		ft_print_di.c \
+		ft_print_hex.c \
+		ft_print_address.c \
+		ft_print_u.c
+OBJS  = $(SRCS:.c=.o)
 
 all : $(NAME)
-
-%.o : %.c
-	$(CC) $(CFLAGS) -c $< -I$(HEAD)
 
 $(NAME) : $(OBJS)
 	make -C $(LIBFTDIR)
 	cp $(LIBFTDIR)/$(LIBFTFILE) $(NAME)
-	$(AR) $@ $?
+	ar rc $@ $^
 
-bonus :
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEAD)
 
 clean :
 	make -C $(LIBFTDIR) clean
-	$(RM) $(OBJS)
+	rm -f $(OBJS)
 
 fclean : clean
 	make -C $(LIBFTDIR) fclean
-	$(RM) $(NAME)
+	rm -f $(NAME)
 
-re : clean all
+re :
+	make fclean
+	make all
 
-.PHONY : all clean fclean re bonus
+.PHONY : all clean fclean bonus re

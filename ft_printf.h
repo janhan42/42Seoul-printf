@@ -5,74 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: janhan <janhan@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 09:48:07 by janhan            #+#    #+#             */
-/*   Updated: 2023/10/16 09:10:48 by janhan           ###   ########.fr       */
+/*   Created: 2023/10/16 11:36:20 by janhan            #+#    #+#             */
+/*   Updated: 2023/10/16 15:35:35 by janhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-# include <unistd.h>
-# include <stdarg.h>
-# include <stdlib.h>
 # include "./libft/libft.h"
+# include <stdarg.h>
+# include <unistd.h>
 
-# define TRUE 1
-# define FALSE 0
-# define ERROR -1
+/* --------------------------메인 함수-------------------------- */
 
-# define ENABLE 1
-# define DISABLE 0
-# define SMALL 32
+void	ft_print_format(const char format, va_list *out_ap, int *out_count);
+void	ft_parse_type(const char *format, va_list *out_ap, int *out_count);
+int		ft_printf(const char *format, ...);
 
-# define DIGITS "0123456789ABCDEF"
+/*	-------------------------문자 함수-------------------------- */
 
-typedef struct s_info
-{
-	int			minus;
-	int			zero;
-	int			width;
-	int			precision;
-	int			dot_only;
-	int			locass;
-	int			num_base;
-	int			num_sign;
-	int			address;
-}				t_info;
+void	ft_print_char(va_list *out_ap, int *out_count);
+void	ft_print_str(va_list *out_ap, int *out_count);
+void	ft_print_per(int *out_count);
 
-/*
-*****************************   MAIN FUNCTION   *******************************
-*/
-void			init_struct(t_info *info);
-int				ft_format_check(const char *format, va_list ap);
-int				ft_printf(const char *format, ...);
+/*	-------------------------숫자 함수-------------------------- */
 
-/*
-*****************************   PARSE FUNCTION   ******************************
-*/
-int				skip_atoi(const char **s);
-void			ft_parse_flag(const char **format, t_info *info);
-void			ft_parse_width(const char **format, t_info *info, va_list ap);
-void			ft_parse_precision(const char **format,
-					t_info *info, va_list ap);
-int				ft_parse_type(t_info *info, va_list ap, const char type);
-
-/*
-*****************************   PRINT FUNCTION   *******************************
-*/
-int				ft_print_char(t_info *info, va_list ap);
-int				ft_print_percent(t_info *info);
-int				ft_print_string(t_info *info, va_list ap);
-int				print_di(t_info *info, va_list ap);
-int				print_u(t_info *info, va_list ap);
-int				print_xx(t_info *info, va_list ap, char type);
-int				print_p(t_info *info, va_list ap);
-int				ft_print_num(t_info *info, va_list ap, const char type);
-int				get_max(int a, int b);
-int				ft_putchar_len(char c, int *len);
-int				num_itoa(t_info *info, char *num_box, long long num);
-int				print_sign(t_info *info);
-int				print_num(t_info *info, long long num);
+void	ft_print_di(va_list *out_ap, int *out_count);
+void	ft_print_hex(va_list *out_ap, int *out_count, const char type);
+void	ft_print_address(va_list *out_ap, int	*out_count);
+void	ft_print_u(va_list *out_ap, int *out_count);
 
 #endif

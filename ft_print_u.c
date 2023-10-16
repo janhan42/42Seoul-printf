@@ -1,20 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   ft_print_u.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: janhan <janhan@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 13:05:18 by janhan            #+#    #+#             */
-/*   Updated: 2023/10/10 14:13:29 by janhan           ###   ########.fr       */
+/*   Created: 2023/10/16 14:31:13 by janhan            #+#    #+#             */
+/*   Updated: 2023/10/16 15:34:32 by janhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
-int main()
+static void	ft_putnbr_u(unsigned int num, int *out_count)
 {
-	ft_printf("%u\n", -123456789);
-	printf("%u\n", -123456789);
+	char	c;
+
+	if (num <= 0)
+		return ;
+	ft_putnbr_u(num / 10, out_count);
+	c = num % 10 + '0';
+	*out_count += write(1, &c, 1);
+}
+
+void	ft_print_u(va_list *out_ap, int *out_count)
+{
+	unsigned int	num;
+
+	num = va_arg(*out_ap, unsigned int);
+	if (num == 0)
+	{
+		*out_count += write(1, "0", 1);
+		return ;
+	}
+	ft_putnbr_u(num, out_count);
 }

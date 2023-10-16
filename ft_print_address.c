@@ -1,38 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_char.c                                    :+:      :+:    :+:   */
+/*   ft_print_address.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: janhan <janhan@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 12:25:01 by janhan            #+#    #+#             */
-/*   Updated: 2023/10/16 15:33:56 by janhan           ###   ########.fr       */
+/*   Created: 2023/10/16 14:06:45 by janhan            #+#    #+#             */
+/*   Updated: 2023/10/16 15:15:50 by janhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_print_char(va_list *out_ap, int *out_count)
+static void	ft_putaddress(int *out_count, size_t num)
 {
+	char	*lowhex;
 	char	c;
 
-	c = (unsigned char)va_arg(*out_ap, int);
+	if (num <= 0)
+		return ;
+	lowhex = "0123456789abcdef";
+	ft_putaddress(out_count, num / 16);
+	c = lowhex[num % 16];
 	*out_count += write(1, &c, 1);
 }
 
-void	ft_print_str(va_list *out_ap, int *out_count)
+void	ft_print_address(va_list *out_ap, int *out_count)
 {
-	char	*str;
-	size_t	len;
+	size_t	address;
 
-	str = va_arg(*out_ap, char *);
-	if (str == NULL)
-		str = "(null)";
-	len = ft_strlen(str);
-	*out_count += write(1, str, len);
-}
-
-void	ft_print_per(int *out_count)
-{
-	*out_count += write(1, "%", 1);
+	address = (size_t)va_arg(*out_ap, void *);
+	if (address == 0)
+	{
+		*out_count += write(1, "0x0", 3);
+		return ;
+	}
+	else
+	{
+		*out_count += write(1, "0x", 2);
+		ft_putaddress(out_count, address);
+	}
 }
