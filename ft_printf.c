@@ -5,54 +5,72 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: janhan <janhan@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 15:57:57 by janhan            #+#    #+#             */
-/*   Updated: 2023/10/10 16:42:23 by janhan           ###   ########.fr       */
+/*   Created: 2023/10/10 11:25:48 by janhan            #+#    #+#             */
+/*   Updated: 2023/10/13 23:55:40 by janhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_format_check(const char *str)
+void	init_struct(t_info *info)
 {
-
-
+	info->minus = DISABLE;
+	info->zero = DISABLE;
+	info->dot_only = DISABLE;
+	info->locass = DISABLE;
+	info->address = DISABLE;
+	info->precision = -1;
+	info->num_base = 10;
+	info->num_sign = 0;
 }
 
-int	ft_printf(const char *str, ...)
+int	ft_format_check(const char *format, va_list ap)
 {
-	va_list ap;
-	int		out_count;
+	t_info	info;
+	int		count_printed;
 
-	out_count = 0;
-	va_start(ap, str);
-	while (str[i])
+	count_printed = 0;
+	while (*format != '\0')
 	{
-		if(str[i] != '%')
-			ft_putchar_fd(str[i], STDOUT_FILENO);
-		else
+		init_struct(&info);
+		if (*format == '%')
 		{
-			i++;
-			if (str[i] == 'c')
-				ft_putchar_fd(va_arg(ap, int), STDOUT_FILENO);
-			if (str[i] == 'd' || str[i] == 'i')
-				ft_putnbr_fd(va_arg(ap, int), STDOUT_FILENO);
-			if (str[i] == 's')
-				ft_putstr_fd(va_arg(ap, char *), STDOUT_FILENO);
-			if (str[i] == 'p')
-				ft_print_p(va_arg(ap, void *), STDOUT_FILENO);
-			if (str[i] == 'u')
-				ft_print_u(va_arg(ap, unsigned int), STDOUT_FILENO);
-			if (str[i] == 'x')
-				ft_print_hex(va_arg(ap, int), STDOUT_FILENO, flag = 1);
-			if (str[i] == 'X')
-				ft_printf_hex(va_arg(ap, unsigned int), STDOUT_FILENO, flag = 2);
+			format++;
+			ft_parse_flag(&format, &info);
+			ft_parse_width(&format, &info, ap);
+			ft_parse_precision(&format, &info, ap);
+			count_printed += ft_parse_type(&info, ap, *format);
 		}
-		i++;
+		else
+			count_printed += write(1, format, 1);
+		format++;
 	}
-	return (out_count);
+	return (count_printed);
 }
 
-int main(void)
+int	ft_printf(const char *format, ...)
 {
-	printf("%d", 123123);
+	va_list	ap;
+	int		count_printed;
+
+	va_start(ap, format);
+	count_printed = ft_format_check(format, ap);
+	va_end(ap);
+	return (count_printed);
+
 }
+/*	format = cdspuxX%
+	c = ft_putchar_fd
+	d && i = ft_putnbr_fd
+	s = ft_putstr_fd
+	p = TODO: ft_print_p
+	u = TODO: ft_print_u
+	x && X = TODO: ft_print_hex
+	% = TODO: ft_print_per*/
+
+/*	숫자 관련	*/
+/*	print_di
+	print_u
+	print_xx
+	print_p
+	*/
