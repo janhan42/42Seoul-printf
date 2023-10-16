@@ -6,20 +6,20 @@
 /*   By: janhan <janhan@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 11:37:19 by janhan            #+#    #+#             */
-/*   Updated: 2023/10/16 15:41:09 by janhan           ###   ########.fr       */
+/*   Updated: 2023/10/16 16:44:53 by janhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_print_format(const char format, va_list *out_ap, int *out_count)
+static void	ft_print_format(const char format, va_list *out_ap, int *out_count)
 {
 	if (format == 'c')
 		ft_print_char(out_ap, out_count);
 	else if (format == 's')
 		ft_print_str(out_ap, out_count);
 	else if (format == '%')
-		ft_print_per(out_count);
+		*out_count += write(1, "%", 1);
 	else if (format == 'd' || format == 'i')
 		ft_print_di(out_ap, out_count);
 	else if (format == 'x' || format == 'X')
@@ -30,7 +30,7 @@ void	ft_print_format(const char format, va_list *out_ap, int *out_count)
 		ft_print_u(out_ap, out_count);
 }
 
-void	ft_parse_type(const char *format, va_list *out_ap, int *out_count)
+static void	ft_parse_type(const char *format, va_list *out_ap, int *out_count)
 {
 	size_t	i;
 

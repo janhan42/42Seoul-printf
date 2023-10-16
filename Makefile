@@ -6,7 +6,7 @@
 #    By: janhan <janhan@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/16 10:58:10 by janhan            #+#    #+#              #
-#    Updated: 2023/10/16 14:53:26 by janhan           ###   ########.fr        #
+#    Updated: 2023/10/16 16:41:30 by janhan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,11 @@ CFLAGS = # -Wall -Wextra -Werror
 
 SRCS  = ft_printf.c \
 		ft_print_char.c \
+		ft_print_str.c \
 		ft_print_di.c \
 		ft_print_hex.c \
-		ft_print_address.c \
-		ft_print_u.c
+		ft_print_u.c \
+		ft_print_address.c
 OBJS  = $(SRCS:.c=.o)
 
 all : $(NAME)
