@@ -6,7 +6,7 @@
 #    By: janhan <janhan@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/16 10:58:10 by janhan            #+#    #+#              #
-#    Updated: 2023/10/16 16:41:30 by janhan           ###   ########.fr        #
+#    Updated: 2023/10/26 14:33:39 by janhan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFTFILE	= libft.a
 HEAD		= ft_printf.h
 
 CC = cc
-CFLAGS = # -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 SRCS  = ft_printf.c \
 		ft_print_char.c \

@@ -6,32 +6,40 @@
 /*   By: janhan <janhan@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 14:31:13 by janhan            #+#    #+#             */
-/*   Updated: 2023/10/16 15:34:32 by janhan           ###   ########.fr       */
+/*   Updated: 2023/10/26 14:35:19 by janhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	ft_putnbr_u(unsigned int num, int *out_count)
+static void	ft_putnbr_u(unsigned int num, int *out_count, int *flag)
 {
 	char	c;
 
-	if (num <= 0)
+	if (num <= 0 || *flag == ERROR)
 		return ;
-	ft_putnbr_u(num / 10, out_count);
+	ft_putnbr_u(num / 10, out_count, flag);
 	c = num % 10 + '0';
-	*out_count += write(1, &c, 1);
+	if (*flag == ERROR)
+		return ;
+	if (write(1, &c, 1) == -1)
+		*flag = ERROR;
+	else
+		*out_count += 1;
 }
 
-void	ft_print_u(va_list *out_ap, int *out_count)
+void	ft_print_u(va_list *out_ap, int *out_count, int *flag)
 {
 	unsigned int	num;
 
 	num = va_arg(*out_ap, unsigned int);
 	if (num == 0)
 	{
-		*out_count += write(1, "0", 1);
+		if (write(1, "0", 1) == -1)
+			*flag = ERROR;
+		else
+			*out_count += 1;
 		return ;
 	}
-	ft_putnbr_u(num, out_count);
+	ft_putnbr_u(num, out_count, flag);
 }
